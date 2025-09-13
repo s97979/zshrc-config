@@ -13,16 +13,19 @@ This repository contains my personal Zsh configuration file (`.zshrc`) optimized
 ## Installation
 
 1. Clone this repository:
+
    ```bash
    git clone https://github.com/bernardopg/zshrc-config.git
    ```
 
 2. Copy the `.zshrc` to your home directory:
+
    ```bash
    cp zshrc-config/.zshrc ~/.zshrc
    ```
 
 3. Reload your Zsh configuration:
+
    ```bash
    source ~/.zshrc
    ```

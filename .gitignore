@@ -1,5 +1,7 @@
 .qodo
-
+/*
+!/.zshrc
+!/README.md
 # Logs
 *.log
 npm-debug.log*
@@ -166,3 +168,10 @@ hs_err_pid*
 # Zsh specific
 .zcompdump*
 .zwc
+
+.arduino
+.arduino15
+.android
+.arduinoIDE
+.bundle
+.cargo
