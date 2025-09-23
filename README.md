@@ -1,24 +1,49 @@
-# zshrc-config
+# 🚀 zshrc-config ⚡
 
-> A minimal, portable zsh configuration and helper collection. Includes aliases, functions and an `update()` helper that can manage system and language package managers across Linux, WSL and Windows environments.
+> 💡 A minimal, portable zsh configuration and helper collection. Includes aliases, functions and an `update()` helper that can manage system and language package managers across Linux, WSL and Windows environments.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Platform](https://img.shields.io/badge/platform-Linux%20%7C%20WSL%20%7C%20Windows%20%28MSYS2%20%7C%20Git--Bash%20%7C%20Cygwin%29-blue.svg)](https://github.com/bernardopg/zshrc-config)
 [![GitHub issues](https://img.shields.io/github/issues/bernardopg/zshrc-config.svg)](https://github.com/bernardopg/zshrc-config/issues)
+[![GitHub stars](https://img.shields.io/github/stars/bernardopg/zshrc-config.svg?style=social)](https://github.com/bernardopg/zshrc-config/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/bernardopg/zshrc-config.svg?style=social)](https://github.com/bernardopg/zshrc-config/network)
+[![GitHub last commit](https://img.shields.io/github/last-commit/bernardopg/zshrc-config.svg)](https://github.com/bernardopg/zshrc-config/commits)
+[![Repo size](https://img.shields.io/github/repo-size/bernardopg/zshrc-config.svg)](https://github.com/bernardopg/zshrc-config)
+[![GitHub all releases](https://img.shields.io/github/downloads/bernardopg/zshrc-config/total.svg)](https://github.com/bernardopg/zshrc-config/releases)
 
-## English
+## 📋 Navigation / Navegação 🚀
 
-zshrc-config is a small collection of configuration snippets and helpers for zsh (`.zshrc`) tailored for personal use. It contains aliases, functions and recommended plugins to speed up shell productivity.
+### 🌐 Languages / Idiomas 🌍
+
+- **[English](#english)** - Complete documentation in English 🇺🇸
+- **[Português (Brasil)](#português-brasil)** - Documentação completa em português 🇧🇷
+
+### 📚 Documentation Sections / Seções da Documentação 📖
+
+- **[Dotfiles — Universal Zsh + Update Function](#dotfiles--universal-zsh--update-function)** - Detailed technical documentation (English) ⚙️
+- **[Dotfiles — Universal Zsh + Update Function](#dotfiles--universal-zsh--update-function-1)** - Documentação técnica detalhada (Português) ⚙️
+
+### 📖 Other Documents / Outros Documentos 📋
+
+- **[Contributing Guide / Guia de Contribuição](CONTRIBUTING.md)** - How to contribute to the project 🤝
+- **[Security Policy / Política de Segurança](SECURITY.md)** - Security guidelines and vulnerability reporting 🔒
+- **[License / Licença](LICENSE)** - MIT License details 📄
+
+---
+
+## English 🇺🇸
+
+🚀 **zshrc-config** is a small collection of configuration snippets and helpers for zsh (`.zshrc`) tailored for personal use. It contains aliases, functions and recommended plugins to speed up shell productivity.
 
 This repository is intentionally minimal — use it as a starting point or copy snippets into your own `~/.zshrc`.
 
-### Features
+### ✨ Features
 
-- Simple aliases for common tasks
-- Useful zsh functions and helpers
-- Plugin recommendations and notes
+- 🏷️ Simple aliases for common tasks
+- 🔧 Useful zsh functions and helpers
+- 📦 Plugin recommendations and notes
 
-### Quick start
+### 🚀 Quick start
 
 1. Clone the repo:
 
@@ -160,19 +185,19 @@ See `LICENSE` for details.
 
 ---
 
-## Português (Brasil)
+## Português (Brasil) 🇧🇷
 
-zshrc-config é uma pequena coleção de trechos de configuração e utilitários para zsh (`.zshrc`) adaptada para uso pessoal. Contém aliases, funções e recomendações de plugins para aumentar a produtividade no shell.
+🚀 **zshrc-config** é uma pequena coleção de trechos de configuração e utilitários para zsh (`.zshrc`) adaptada para uso pessoal. Contém aliases, funções e recomendações de plugins para aumentar a produtividade no shell.
 
 Este repositório é propositalmente minimalista — use como ponto de partida ou copie trechos para o seu `~/.zshrc`.
 
-### Funcionalidades
+### ✨ Funcionalidades
 
-- Aliases simples para tarefas comuns
-- Funções e helpers úteis para zsh
-- Recomendações e notas sobre plugins
+- 🏷️ Aliases simples para tarefas comuns
+- 🔧 Funções e helpers úteis para zsh
+- 📦 Recomendações e notas sobre plugins
 
-### Começando rapidamente
+### 🚀 Começando rapidamente
 
 1. Clone o repositório:
 
