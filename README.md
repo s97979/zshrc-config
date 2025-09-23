@@ -1,123 +1,347 @@
 
-# 🚀 Ultimate Zsh Configuration for Power Users
+# zshrc-config
 
-> **A modern, minimal, and powerful `.zshrc` for Linux users who want speed, productivity, and style.**
+> A minimal, portable zsh configuration and helper collection. Includes aliases, functions and an `update()` helper that can manage system and language package managers across Linux, WSL and Windows environments.
 
-Welcome to the ultimate Zsh configuration! This repo brings you a battle-tested, feature-rich `.zshrc` designed for Ubuntu and adaptable to any Linux distribution. Enjoy blazing-fast completions, beautiful prompts, smart aliases, and a next-level system update function—all in a single file.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Platform](https://img.shields.io/badge/platform-Linux%20%7C%20WSL%20%7C%20Windows%20%28MSYS2%20%7C%20Git--Bash%20%7C%20Cygwin%29-blue.svg)](https://github.com/bernardopg/zshrc-config)
 
----
+## English
 
-## ✨ Highlights
+zshrc-config is a small collection of configuration snippets and helpers for zsh (`.zshrc`) tailored for personal use. It contains aliases, functions and recommended plugins to speed up shell productivity.
 
-- **Lightning-Fast Completions**: Optimized for Zsh 5.9+ with robust tab completion and history search.
-- **Smart Aliases & Functions**: Save keystrokes with enhanced `ls`, `grep`, `mkcd`, `extract`, and more.
-- **One-Command System Update**: The `update` function upgrades your system, dev tools, and language packages—intelligently and safely.
-- **Plugin-Ready**: Works out-of-the-box with Oh My Zsh, zoxide, starship, eza, bat, fd, and more.
-- **Persistent, Clean History**: Never lose your command history, with deduplication and XDG support.
-- **Beautiful Prompt**: Customizable, minimal, and compatible with Starship.
-- **Cross-Platform**: Built for Ubuntu, but easily portable to other distros.
+This repository is intentionally minimal — use it as a starting point or copy snippets into your own `~/.zshrc`.
 
----
+### Features
 
-## 🚦 Quick Start
+- Simple aliases for common tasks
+- Useful zsh functions and helpers
+- Plugin recommendations and notes
+
+### Quick start
+
+1. Clone the repo:
 
 ```bash
 git clone https://github.com/bernardopg/zshrc-config.git
-cp zshrc-config/.zshrc ~/.zshrc
-source ~/.zshrc
 ```
 
----
+2. Inspect and copy the parts you want into your `~/.zshrc` or source files:
 
-## 🛠️ Features in Detail
+```bash
+cp ~/.zshrc-config/some-snippet.zsh ~/.zshrc.d/
+```
 
-- **System Update Function**: Run `update` for a full system upgrade (APT, Snap, Flatpak, dev tools, language managers, and more). Includes advanced options, logging, and error handling.
-- **Modern Aliases**: Enhanced `ls`, `ll`, `la`, `grep`, and utilities for daily productivity.
-- **Handy Functions**: `mkcd`, `extract`, `killport`, `bk`, `ff`, and more.
-- **Plugin Support**: Seamless integration with Oh My Zsh, zoxide, starship, eza, bat, fd, and others.
-- **Persistent History**: XDG-compliant, deduplicated, and shared across sessions.
-- **Minimal, Fast, and Clean**: No bloat, no unnecessary plugins—just what you need.
+### Contributing
 
----
+Pull requests are welcome. Open an issue to discuss larger changes first.
 
-## 📦 Requirements
+### Contact
 
-- Zsh 5.9+
-- Ubuntu (or compatible Linux)
-- Optional: [Oh My Zsh](https://ohmyz.sh/), [zoxide](https://github.com/ajeetdsouza/zoxide), [starship](https://starship.rs/), [eza](https://eza.rocks/), [bat](https://github.com/sharkdp/bat), [fd](https://github.com/sharkdp/fd)
+- **Website**: [bebitterbebetter.com.br](https://bebitterbebetter.com.br/)
+- **Email**: [bernardo.gomes@bebitterbebetter.com.br](mailto:bernardo.gomes@bebitterbebetter.com.br)
+- **GitHub**: [@bernardopg](https://github.com/bernardopg)
+- **Instagram**: [@be.pgomes](https://www.instagram.com/be.pgomes/)
+- **ORCID**: [0009-0005-1610-5039](https://orcid.org/0009-0005-1610-5039)
 
----
+### License
 
-## 💡 Usage Examples
-
-- `update` — Run a full system update (see `update --help` for options)
-- `ls`, `ll`, `la` — Enhanced directory listings
-- `mkcd <dir>` — Create and enter a directory
-- `extract <file>` — Extract any archive format
-- `killport <port>` — Kill process on a given port
-- `bk <file>` — Quick file backup
-- `ff <pattern>` — Find files by pattern
+This project is licensed under the MIT License — see `LICENSE` for details.
 
 ---
 
-## 🤝 Contributing
+## Português (Brasil)
 
-Fork, adapt, and send your pull requests! Suggestions and improvements are always welcome.
+zshrc-config é uma pequena coleção de trechos de configuração e utilitários para zsh (`.zshrc`) adaptada para uso pessoal. Contém aliases, funções e recomendações de plugins para aumentar a produtividade no shell.
+
+Este repositório é propositalmente minimalista — use como ponto de partida ou copie trechos para o seu `~/.zshrc`.
+
+### Funcionalidades
+
+- Aliases simples para tarefas comuns
+- Funções e helpers úteis para zsh
+- Recomendações e notas sobre plugins
+
+### Começando rapidamente
+
+1. Clone o repositório:
+
+```bash
+git clone https://github.com/bernardopg/zshrc-config.git
+```
+
+2. Inspecione e copie as partes que desejar para o seu `~/.zshrc` ou arquivos de sourced:
+
+```bash
+cp ~/.zshrc-config/some-snippet.zsh ~/.zshrc.d/
+```
+
+### Contribuindo
+
+Pull requests são bem-vindos. Abra uma issue para discutir mudanças maiores antes.
+
+### Contato
+
+- **Site**: [bebitterbebetter.com.br](https://bebitterbebetter.com.br/)
+- **Email**: [bernardo.gomes@bebitterbebetter.com.br](mailto:bernardo.gomes@bebitterbebetter.com.br)
+- **GitHub**: [@bernardopg](https://github.com/bernardopg)
+- **Instagram**: [@be.pgomes](https://www.instagram.com/be.pgomes/)
+- **ORCID**: [0009-0005-1610-5039](https://orcid.org/0009-0005-1610-5039)
+
+### Licença
+
+Este projeto está licenciado sob a Licença MIT — veja `LICENSE` para detalhes.
 
 ---
 
-## 📜 License
+## Dotfiles — Universal Zsh + Update Function
 
-MIT License. Use, modify, and share freely.
+> Um único `.zshrc` que funciona em múltiplos ambientes (Linux, WSL, MSYS2, Git-Bash), com completion rápida, aliases inteligentes, função `update()` que integra vários gerenciadores e diversas melhorias de performance.
 
-## Installation
+### ✨ Destaques
 
-1. Clone this repository:
+| Recurso | Benefício |
+|--------:|:----------|
+| **Universal** | Idêntico no Linux puro, WSL, MSYS2, Cygwin, Git-Bash |
+| **Seguro** | Chaves de API ficam em `~/.config/private/env.zsh` (fora do repo, `chmod 600`) |
+| **Rápido** | `zcompile`, carregamento lazy, `zsh-defer`, cache de completion |
+| **Completo** | `update` gerencia 20+ gerenciadores com retry, logs, dry-run, cleanup |
+| **Git-info** | Branch no prompt sem plugins lentos |
+| **Histórico multi-terminal** | Sem duplicatas, tempo real, 100k linhas |
+| **True-color** | Ativa só se o terminal suportar |
+| **Sem surprises** | Silencia recursos inexistentes (ex.: `beep`, `firmware` no WSL) |
 
-   ```bash
-   git clone https://github.com/bernardopg/zshrc-config.git
-   ```
+### 📦 Instalação rápida
 
-2. Copy the `.zshrc` to your home directory:
+```bash
+# 1. Clone (ou baixe só o .zshrc)
+git clone https://github.com/bernardopg/zshrc-config.git ~/.zshrc-config
 
-   ```bash
-   cp zshrc-config/.zshrc ~/.zshrc
-   ```
+# 2. Link simbólico
+ln -sf ~/.zshrc-config/.zshrc ~/.zshrc
 
-3. Reload your Zsh configuration:
+# 3. Crie o diretório privado (API keys, etc.)
+mkdir -p ~/.config/private
+chmod 700 ~/.config/private
+cp ~/.zshrc-config/env.example ~/.config/private/env.zsh
+chmod 600 ~/.config/private/env.zsh
 
-   ```bash
-   source ~/.zshrc
-   ```
+# 4. Recarregue
+exec zsh
+```
 
-## Key Components
+Pronto! A primeira execução compila o arquivo (`zcompile`) e cria caches — próximos shells abrem ainda mais rápido.
 
-- **System Update Function**: Run `update` for comprehensive system updates
-- **Modern Aliases**: Enhanced ls, grep, and utility commands
-- **History Management**: Persistent history with deduplication
-- **Completion**: Fast and robust tab completion
-- **Path Management**: Automatic path setup for local binaries
+### 🔑 Personalizando chaves de API
 
-## Requirements
+Edite `~/.config/private/env.zsh` (nunca commitado):
 
-- Zsh 5.9+
-- Ubuntu (or compatible Linux distribution)
-- Optional: Oh My Zsh, zoxide, starship, eza, bat, fd
+```bash
+export OPENAI_API_KEY='sk-XXXXXXXXXXXX'
+export ANTHROPIC_API_KEY='sk-ant-XXXXXXXX'
+```
 
-## Usage
+Exemplo disponível em `env.example`.
 
-After installation, you can use various aliases and functions:
+### ⚙️ Comandos principais
 
-- `update`: Run system updates
-- `ls` / `ll` / `la`: Enhanced directory listing
-- `grep`: Colored grep output
-- `mkcd <dir>`: Create and cd into directory
-- `extract <file>`: Extract various archive formats
+| Comando | Descrição |
+|:-------|:----------|
+| `update` ou `up` | Atualiza **tudo** (sistema, linguagens, containers, firmware) |
+| `update --dry-run` | Simula o que seria atualizado |
+| `update --system --cleanup` | Só pacotes de sistema + limpeza |
+| `update --only apt,npm` | Escolhe gerenciadores |
+| `rz` | Recarrega o zsh após editar `.zshrc` |
+| `zsh-health` | Mini-diagnóstico (cache, PATH, histórico) |
+| `killport 3000` | Mata processo na porta 3000 (Linux/Windows) |
+| `extract arquivo.zip` | Extrai **qualquer** compactado |
+| `..` / `...` | Up 1 ou 2 níveis |
+| `ll` / `la` | `ls` melhorado (usa `eza` se disponível) |
 
-## Contributing
+### 🧩 Dependências opcionais (mas recomendadas)
 
-Feel free to fork and adapt this configuration to your needs. Pull requests are welcome!
+| Ferramenta | Ganho |
+|:----------|:------|
+| `eza` | `ls` colorido e com ícones |
+| `bat` | `cat` com syntax-highlight |
+| `fd` | `find` rápido para FZF |
+| `zoxide` | `cd` com "frecência" |
+| `starship` | Prompt ultra-rápido (substitui o default) |
+| `fzf` | Fuzzy-find para histórico/arquivos |
+| `pipx` | Aplicativos Python isolados (PEP 668) |
 
-## License
+Instale via `update --only <manager>` ou gerenciador nativo.
 
-This configuration is provided as-is for personal use. Modify and distribute freely.
+### 🔄 Função `update` – exemplos
+
+```bash
+update --dry-run                  # preview
+update --security-only            # só patches críticos
+update --cleanup --kernels-keep 3 # limpa kernels antigos
+update --exclude snap             # tudo, menos snap
+```
+
+Logs ficam em `~/.local/state/sysupdate/logs/` com rotação automática.
+
+### 📁 Estrutura do repo
+
+```text
+.
+├── .zshrc              # Arquivo principal (único que você precisa)
+├── env.example         # Template de chaves/APIs
+├── LICENSE          # MIT
+└── README.md           # Este arquivo
+```
+
+### 🤝 Contribuindo
+
+Sugestões e PRs são bem-vindos! Teste no **Linux puro**, **WSL** e **Windows (Git-Bash/MSYS2)** antes de abrir PR.
+
+### 📄 Licença
+
+MIT – faça o que quiser, mas sem garantias.
+
+## Português (Brasil)
+
+zshrc-config é uma pequena coleção de trechos de configuração e utilitários para zsh (`.zshrc`) adaptada para uso pessoal. Contém aliases, funções e recomendações de plugins para aumentar a produtividade no shell.
+
+Este repositório é propositalmente minimalista — use como ponto de partida ou copie trechos para o seu `~/.zshrc`.
+
+### Funcionalidades
+
+- Aliases simples para tarefas comuns
+- Funções e helpers úteis para zsh
+- Recomendações e notas sobre plugins
+
+### Começando rapidamente
+
+1. Clone o repositório:
+
+```bash
+git clone https://github.com/bernardopg/zshrc-config.git
+```
+
+2. Inspecione e copie as partes que desejar para o seu `~/.zshrc` ou arquivos de sourced:
+
+```bash
+cp zshrc-config/some-snippet.zsh ~/.zshrc.d/
+```
+
+### Contribuindo
+
+Pull requests são bem-vindos. Abra uma issue para discutir mudanças maiores antes.
+
+### Licença
+
+Este projeto está licenciado sob a Licença MIT — veja `LICENSE` para detalhes.
+
+---
+
+## Dotfiles — Universal Zsh + Update Function
+
+> Um único `.zshrc` que funciona em múltiplos ambientes (Linux, WSL, MSYS2, Git-Bash), com completion rápida, aliases inteligentes, função `update()` que integra vários gerenciadores e diversas melhorias de performance.
+
+### ✨ Destaques
+
+| Recurso | Benefício |
+|--------:|:----------|
+| **Universal** | Idêntico no Linux puro, WSL, MSYS2, Cygwin, Git-Bash |
+| **Seguro** | Chaves de API ficam em `~/.config/private/env.zsh` (fora do repo, `chmod 600`) |
+| **Rápido** | `zcompile`, carregamento lazy, `zsh-defer`, cache de completion |
+| **Completo** | `update` gerencia 20+ gerenciadores com retry, logs, dry-run, cleanup |
+| **Git-info** | Branch no prompt sem plugins lentos |
+| **Histórico multi-terminal** | Sem duplicatas, tempo real, 100k linhas |
+| **True-color** | Ativa só se o terminal suportar |
+| **Sem surprises** | Silencia recursos inexistentes (ex.: `beep`, `firmware` no WSL) |
+
+### 📦 Instalação rápida
+
+```bash
+# 1. Clone (ou baixe só o .zshrc)
+
+# Replace clone URL to the actual repo
+git clone https://github.com/bernardopg/zshrc-config.git ~/.zshrc-config
+
+# 2. Link simbólico
+ln -sf ~/.zshrc-config/.zshrc ~/.zshrc
+
+# 3. Crie o diretório privado (API keys, etc.)
+mkdir -p ~/.config/private
+chmod 700 ~/.config/private
+cp ~/.zshrc-config/env.example ~/.config/private/env.zsh
+chmod 600 ~/.config/private/env.zsh
+
+# 4. Recarregue
+exec zsh
+```
+
+Pronto! A primeira execução compila o arquivo (`zcompile`) e cria caches — próximos shells abrem ainda mais rápido.
+
+### 🔑 Personalizando chaves de API
+
+Edite `~/.config/private/env.zsh` (nunca commitado):
+
+```bash
+export OPENAI_API_KEY='sk-XXXXXXXXXXXX'
+export ANTHROPIC_API_KEY='sk-ant-XXXXXXXX'
+```
+
+Exemplo disponível em `env.example`.
+
+### ⚙️ Comandos principais
+
+| Comando | Descrição |
+|:-------|:----------|
+| `update` ou `up` | Atualiza **tudo** (sistema, linguagens, containers, firmware) |
+| `update --dry-run` | Simula o que seria atualizado |
+| `update --system --cleanup` | Só pacotes de sistema + limpeza |
+| `update --only apt,npm` | Escolhe gerenciadores |
+| `rz` | Recarrega o zsh após editar `.zshrc` |
+| `zsh-health` | Mini-diagnóstico (cache, PATH, histórico) |
+| `killport 3000` | Mata processo na porta 3000 (Linux/Windows) |
+| `extract arquivo.zip` | Extrai **qualquer** compactado |
+| `..` / `...` | Up 1 ou 2 níveis |
+| `ll` / `la` | `ls` melhorado (usa `eza` se disponível) |
+
+### 🧩 Dependências opcionais (mas recomendadas)
+
+| Ferramenta | Ganho |
+|:----------|:------|
+| `eza` | `ls` colorido e com ícones |
+| `bat` | `cat` com syntax-highlight |
+| `fd` | `find` rápido para FZF |
+| `zoxide` | `cd` com “frecência” |
+| `starship` | Prompt ultra-rápido (substitui o default) |
+| `fzf` | Fuzzy-find para histórico/arquivos |
+| `pipx` | Aplicativos Python isolados (PEP 668) |
+
+Instale via `update --only <manager>` ou gerenciador nativo.
+
+### 🔄 Função `update` – exemplos
+
+```bash
+update --dry-run                  # preview
+update --security-only            # só patches críticos
+update --cleanup --kernels-keep 3 # limpa kernels antigos
+update --exclude snap             # tudo, menos snap
+```
+
+Logs ficam em `~/.local/state/sysupdate/logs/` com rotação automática.
+
+### 📁 Estrutura do repo
+
+```text
+.
+├── .zshrc              # Arquivo principal (único que você precisa)
+├── env.example         # Template de chaves/APIs
+├── LICENSE          # MIT
+└── README.md           # Este arquivo
+```
+
+### 🤝 Contribuindo
+
+Sugestões e PRs são bem-vindos! Teste no **Linux puro**, **WSL** e **Windows (Git-Bash/MSYS2)** antes de abrir PR.
+
+### 📄 Licença
+
+MIT – faça o que quiser, mas sem garantias.
