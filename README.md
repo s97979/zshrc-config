@@ -1,6 +1,6 @@
 # 🚀 zshrc-config ⚡
 
-> 💡 A minimal, portable zsh configuration and helper collection. Includes aliases, functions and an `update()` helper that can manage system and language package managers across Linux, WSL and Windows environments.
+> 💡 A comprehensive, universal zsh configuration that works identically across Linux, WSL, MSYS2, Git-Bash, and Cygwin. Features a powerful `update()` function that manages 20+ package managers, smart aliases, modern tool integration, and optimized performance with compilation and caching.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Platform](https://img.shields.io/badge/platform-Linux%20%7C%20WSL%20%7C%20Windows%20%28MSYS2%20%7C%20Git--Bash%20%7C%20Cygwin%29-blue.svg)](https://github.com/bernardopg/zshrc-config)
@@ -33,29 +33,42 @@
 
 ## English 🇺🇸
 
-🚀 **zshrc-config** is a small collection of configuration snippets and helpers for zsh (`.zshrc`) tailored for personal use. It contains aliases, functions and recommended plugins to speed up shell productivity.
+🚀 **zshrc-config** is a production-ready, universal zsh configuration designed for developers and system administrators. It provides a single `.zshrc` file that works identically across all major platforms, includes a comprehensive system update function, modern tool integrations, and performance optimizations.
 
-This repository is intentionally minimal — use it as a starting point or copy snippets into your own `~/.zshrc`.
+This configuration is battle-tested and production-ready — use it as-is or customize to your needs.
 
 ### ✨ Features
 
-- 🏷️ Simple aliases for common tasks
-- 🔧 Useful zsh functions and helpers
-- 📦 Plugin recommendations and notes
+- � **Universal compatibility**: Works on Linux, WSL, MSYS2, Git-Bash, Cygwin
+- 🔄 **Comprehensive update system**: Manages 20+ package managers (apt, npm, cargo, pipx, etc.)
+- 🚀 **Performance optimized**: zcompile, caching, lazy loading, XDG Base Directory compliance
+- 🔒 **Security-first**: Private API keys outside repo, proper permissions
+- 🎨 **Modern tool integration**: eza, bat, fzf, zoxide, starship auto-detection
+- 📚 **Smart history**: Multi-terminal sync, no duplicates, monthly rotation (100k lines)
+- 🎯 **Intelligent aliases**: Context-aware, fallback-enabled
+- 🔌 **Oh My Zsh compatible**: Works with or without OMZ
+- 🛠️ **Developer-friendly**: Git info, Docker/Podman setup, SSH agent management
 
-### 🚀 Quick start
-
-1. Clone the repo:
-
-```bash
-git clone https://github.com/bernardopg/zshrc-config.git
-```
-
-2. Inspect and copy the parts you want into your `~/.zshrc` or source files:
+### 🚀 Quick Installation
 
 ```bash
-cp ~/.zshrc-config/some-snippet.zsh ~/.zshrc.d/
+# 1. Clone the repository
+git clone https://github.com/bernardopg/zshrc-config.git ~/.zshrc-config
+
+# 2. Create symbolic link
+ln -sf ~/.zshrc-config/.zshrc ~/.zshrc
+
+# 3. Set up private directory for API keys
+mkdir -p ~/.config/private
+chmod 700 ~/.config/private
+cp ~/.zshrc-config/env.example ~/.config/private/env.zsh
+chmod 600 ~/.config/private/env.zsh
+
+# 4. Reload zsh
+exec zsh
 ```
+
+✅ **Done!** The first load compiles the file for faster subsequent startups.
 
 ### Contributing
 
@@ -124,59 +137,123 @@ export ANTHROPIC_API_KEY='sk-ant-XXXXXXXX'
 
 Example available in `env.example`.
 
-### ⚙️ Main Commands
+### ⚙️ Key Commands & Features
 
 | Command | Description |
 |:-------|:-----------|
 | `update` or `up` | Updates **everything** (system, languages, containers, firmware) |
-| `update --dry-run` | Simulates what would be updated |
-| `update --system --cleanup` | Only system packages + cleanup |
-| `update --only apt,npm` | Choose specific package managers |
+| `update --dry-run` | Simulates what would be updated (safe preview) |
+| `update --system --cleanup` | Only system packages + cleanup old kernels |
+| `update --only apt,npm,cargo` | Update specific package managers only |
+| `update --exclude snap` | Update everything except specified managers |
+| `update --security-only` | Security patches only |
+| `update --low-data` | Skip bandwidth-heavy operations |
 | `rz` | Reloads zsh after editing `.zshrc` |
-| `zsh-health` | Mini-diagnostic (cache, PATH, history) |
-| `killport 3000` | Kills process on port 3000 (Linux/Windows) |
-| `extract file.zip` | Extracts **any** compressed file |
-| `..` / `...` | Go up 1 or 2 levels |
-| `ll` / `la` | Enhanced `ls` (uses `eza` if available) |
+| `zsh-health` | Quick diagnostic (cache size, PATH, history count) |
+| `killport 3000` | Kills process on specified port (cross-platform) |
+| `extract file.zip` | Extracts **any** compressed file format |
+| `mkcd dirname` | Creates directory and cd into it |
+| `ff pattern` | Fast file search by name pattern |
+| `..` / `...` | Navigate up 1 or 2 directory levels |
+| `ll` / `la` | Enhanced `ls` with eza/fallback, icons, and colors |
 
-### 🧩 Optional Dependencies (but recommended)
+### 🔄 Update Function Features
 
-| Tool | Benefit |
-|:----|:--------|
-| `eza` | Colored `ls` with icons |
-| `bat` | `cat` with syntax highlighting |
-| `fd` | Fast `find` for FZF |
-| `zoxide` | `cd` with "frequency" |
-| `starship` | Ultra-fast prompt (replaces default) |
-| `fzf` | Fuzzy-find for history/files |
-| `pipx` | Isolated Python applications (PEP 668) |
+**Supported Package Managers (20+):**
 
-Install via `update --only <manager>` or native package manager.
+- **System**: apt, snap, flatpak, brew, nix, firmware (fwupdmgr)
+- **Languages**: pip, pipx, npm, yarn, pnpm, cargo, rust, gem, composer, go, flutter
+- **Dev Tools**: docker, podman, conda, mamba, asdf, sdkman, platformio
+- **Shell**: oh-my-zsh, antigen, zinit
 
-### 🔄 Update Function – Examples
+**Advanced Features:**
+
+- 🔄 Exponential backoff retry with configurable attempts
+- 🕐 APT lock detection with intelligent waiting
+- 📊 Comprehensive logging with automatic rotation
+- 🧹 Cleanup modes (caches, old kernels, unused packages)
+- 🔒 Security-only updates support
+- 🚦 Dry-run mode for safe testing
+- 📡 Low-data mode for limited bandwidth
+- ⚡ Parallel operations where safe
+- 🛡️ WSL detection with platform-specific optimizations
+
+### 🧩 Optional Dependencies (Auto-detected)
+
+| Tool | Benefit | Auto-fallback |
+|:----|:--------|:-------------|
+| `eza` | Colored `ls` with icons | ✅ Falls back to `ls --color` |
+| `bat`/`batcat` | `cat` with syntax highlighting | ✅ Falls back to `cat` |
+| `fd`/`fdfind` | Fast `find` for FZF | ✅ Falls back to `find` |
+| `zoxide` | `cd` with frecency | ✅ Falls back to `cd` |
+| `starship` | Ultra-fast prompt | ✅ Falls back to custom git prompt |
+| `fzf` | Fuzzy-find for history/files | ✅ Graceful degradation |
+| `pipx` | Isolated Python apps (PEP 668) | ✅ Prevents system pip issues |
+
+**🎯 Smart Detection**: All tools are auto-detected and gracefully fall back to standard alternatives.
+
+### 🔄 Update Function Examples
 
 ```bash
-update --dry-run                  # preview
-update --security-only            # only critical patches
-update --cleanup --kernels-keep 3 # clean old kernels
-update --exclude snap             # everything except snap
+# Safe preview of all updates
+update --dry-run
+
+# Security patches only
+update --security-only
+
+# System cleanup + kernel management
+update --cleanup --kernels-keep 3
+
+# Update specific managers only
+update --only apt,npm,cargo
+
+# Everything except problematic managers
+update --exclude snap,flatpak
+
+# Low bandwidth mode
+update --low-data
+
+# Non-interactive automation
+update --yes --quiet
+
+# Comprehensive update with cleanup
+update --all --cleanup --security-only
 ```
 
-Logs are stored in `~/.local/state/sysupdate/logs/` with automatic rotation.
+**📊 Automatic Logging**: All operations logged to `~/.local/state/sysupdate/logs/` with rotation (keeps last 10 by default).
 
 ### 📁 Repository Structure
 
 ```text
 .
-├── .zshrc              # Main file (only one you need)
-├── env.example         # API keys template
-├── LICENSE             # MIT
-└── README.md           # This file
+├── .zshrc              # Main configuration (858 lines, feature-complete)
+├── env.example         # Private environment template (API keys, etc.)
+├── README.md           # This documentation
+├── CONTRIBUTING.md     # Contribution guidelines
+├── SECURITY.md         # Security policy
+├── LICENSE             # MIT License
+└── WARP.md            # Warp terminal integration notes
 ```
+
+### 🏗️ Architecture Highlights
+
+- **📁 XDG Base Directory Compliant**: All caches in `~/.cache/zsh/`, logs in `~/.local/state/`
+- **🔒 Security-first**: Private keys in `~/.config/private/` (excluded from repo)
+- **⚡ Performance**: zcompile, lazy loading, intelligent caching
+- **🔄 Monthly History Rotation**: `history-2025-09` format prevents bloat
+- **🌍 Platform Detection**: Auto-adapts to Linux/WSL/MSYS2/Git-Bash
+- **🎨 True-color Detection**: Only enables advanced features when supported
 
 ### 🤝 Contributing
 
-Suggestions and PRs are welcome! Test on **pure Linux**, **WSL**, and **Windows (Git-Bash/MSYS2)** before opening a PR.
+Contributions welcome! Please:
+
+1. **Test on multiple platforms**: Linux, WSL, MSYS2, Git-Bash
+2. **Follow the architecture**: XDG compliance, graceful fallbacks, performance-first
+3. **Update documentation**: Keep README.md current with features
+4. **Security-minded**: No API keys in repo, proper permissions
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
 
 ### 📄 License
 
@@ -187,29 +264,42 @@ See `LICENSE` for details.
 
 ## Português (Brasil) 🇧🇷
 
-🚀 **zshrc-config** é uma pequena coleção de trechos de configuração e utilitários para zsh (`.zshrc`) adaptada para uso pessoal. Contém aliases, funções e recomendações de plugins para aumentar a produtividade no shell.
+🚀 **zshrc-config** é uma configuração zsh universal e pronta para produção, projetada para desenvolvedores e administradores de sistema. Fornece um único arquivo `.zshrc` que funciona identicamente em todas as principais plataformas, inclui uma função abrangente de atualização do sistema, integrações com ferramentas modernas e otimizações de performance.
 
-Este repositório é propositalmente minimalista — use como ponto de partida ou copie trechos para o seu `~/.zshrc`.
+Esta configuração é testada em produção — use como está ou customize conforme suas necessidades.
 
 ### ✨ Funcionalidades
 
-- 🏷️ Aliases simples para tarefas comuns
-- 🔧 Funções e helpers úteis para zsh
-- 📦 Recomendações e notas sobre plugins
+- � **Compatibilidade universal**: Funciona no Linux, WSL, MSYS2, Git-Bash, Cygwin
+- 🔄 **Sistema de atualização abrangente**: Gerencia 20+ gerenciadores (apt, npm, cargo, pipx, etc.)
+- 🚀 **Otimizado para performance**: zcompile, cache, carregamento lazy, compliance XDG
+- � **Segurança em primeiro lugar**: Chaves API privadas fora do repo, permissões adequadas
+- 🎨 **Integração com ferramentas modernas**: Auto-detecção de eza, bat, fzf, zoxide, starship
+- � **Histórico inteligente**: Sync multi-terminal, sem duplicatas, rotação mensal (100k linhas)
+- 🎯 **Aliases inteligentes**: Sensíveis ao contexto, com fallbacks
+- 🔌 **Compatível com Oh My Zsh**: Funciona com ou sem OMZ
+- 🛠️ **Amigável para desenvolvedores**: Info do Git, setup Docker/Podman, gerenciamento SSH agent
 
-### 🚀 Começando rapidamente
-
-1. Clone o repositório:
-
-```bash
-git clone https://github.com/bernardopg/zshrc-config.git
-```
-
-2. Inspecione e copie as partes que desejar para o seu `~/.zshrc` ou arquivos de sourced:
+### 🚀 Instalação Rápida
 
 ```bash
-cp zshrc-config/some-snippet.zsh ~/.zshrc.d/
+# 1. Clone o repositório
+git clone https://github.com/bernardopg/zshrc-config.git ~/.zshrc-config
+
+# 2. Crie link simbólico
+ln -sf ~/.zshrc-config/.zshrc ~/.zshrc
+
+# 3. Configure diretório privado para chaves API
+mkdir -p ~/.config/private
+chmod 700 ~/.config/private
+cp ~/.zshrc-config/env.example ~/.config/private/env.zsh
+chmod 600 ~/.config/private/env.zsh
+
+# 4. Recarregue o zsh
+exec zsh
 ```
+
+✅ **Pronto!** O primeiro carregamento compila o arquivo para startups mais rápidos posteriormente.
 
 ### Contribuindo
 
@@ -278,59 +368,123 @@ export ANTHROPIC_API_KEY='sk-ant-XXXXXXXX'
 
 Exemplo disponível em `env.example`.
 
-### ⚙️ Comandos principais
+### ⚙️ Comandos e Recursos Principais
 
 | Comando | Descrição |
 |:-------|:----------|
 | `update` ou `up` | Atualiza **tudo** (sistema, linguagens, containers, firmware) |
-| `update --dry-run` | Simula o que seria atualizado |
-| `update --system --cleanup` | Só pacotes de sistema + limpeza |
-| `update --only apt,npm` | Escolhe gerenciadores |
-| `rz` | Recarrega o zsh após editar `.zshrc` |
-| `zsh-health` | Mini-diagnóstico (cache, PATH, histórico) |
-| `killport 3000` | Mata processo na porta 3000 (Linux/Windows) |
-| `extract arquivo.zip` | Extrai **qualquer** compactado |
-| `..` / `...` | Up 1 ou 2 níveis |
-| `ll` / `la` | `ls` melhorado (usa `eza` se disponível) |
+| `update --dry-run` | Simula o que seria atualizado (preview seguro) |
+| `update --system --cleanup` | Só pacotes de sistema + limpa kernels antigos |
+| `update --only apt,npm,cargo` | Atualiza gerenciadores específicos apenas |
+| `update --exclude snap` | Atualiza tudo exceto gerenciadores especificados |
+| `update --security-only` | Apenas patches de segurança |
+| `update --low-data` | Pula operações que consomem muita banda |
+| `rz` | Recarrega zsh após editar `.zshrc` |
+| `zsh-health` | Diagnóstico rápido (tamanho cache, PATH, contagem histórico) |
+| `killport 3000` | Mata processo na porta especificada (multiplataforma) |
+| `extract arquivo.zip` | Extrai **qualquer** formato de arquivo compactado |
+| `mkcd dirname` | Cria diretório e faz cd nele |
+| `ff pattern` | Busca rápida de arquivos por padrão de nome |
+| `..` / `...` | Navega 1 ou 2 níveis de diretório acima |
+| `ll` / `la` | `ls` melhorado com eza/fallback, ícones e cores |
 
-### 🧩 Dependências opcionais (mas recomendadas)
+### 🔄 Recursos da Função Update
 
-| Ferramenta | Ganho |
-|:----------|:------|
-| `eza` | `ls` colorido e com ícones |
-| `bat` | `cat` com syntax-highlight |
-| `fd` | `find` rápido para FZF |
-| `zoxide` | `cd` com "frecência" |
-| `starship` | Prompt ultra-rápido (substitui o default) |
-| `fzf` | Fuzzy-find para histórico/arquivos |
-| `pipx` | Aplicativos Python isolados (PEP 668) |
+**Gerenciadores Suportados (20+):**
 
-Instale via `update --only <manager>` ou gerenciador nativo.
+- **Sistema**: apt, snap, flatpak, brew, nix, firmware (fwupdmgr)
+- **Linguagens**: pip, pipx, npm, yarn, pnpm, cargo, rust, gem, composer, go, flutter
+- **Ferramentas Dev**: docker, podman, conda, mamba, asdf, sdkman, platformio
+- **Shell**: oh-my-zsh, antigen, zinit
 
-### 🔄 Função `update` – exemplos
+**Recursos Avançados:**
+
+- 🔄 Retry com backoff exponencial e tentativas configuráveis
+- 🕐 Detecção de locks do APT com espera inteligente
+- 📊 Logging abrangente com rotação automática
+- 🧹 Modos de limpeza (caches, kernels antigos, pacotes não utilizados)
+- 🔒 Suporte a atualizações apenas de segurança
+- 🚦 Modo dry-run para testes seguros
+- 📡 Modo low-data para largura de banda limitada
+- ⚡ Operações paralelas onde seguro
+- 🛡️ Detecção WSL com otimizações específicas da plataforma
+
+### 🧩 Dependências Opcionais (Auto-detectadas)
+
+| Ferramenta | Benefício | Auto-fallback |
+|:----------|:-----------|:-------------|
+| `eza` | `ls` colorido com ícones | ✅ Volta para `ls --color` |
+| `bat`/`batcat` | `cat` com syntax highlighting | ✅ Volta para `cat` |
+| `fd`/`fdfind` | `find` rápido para FZF | ✅ Volta para `find` |
+| `zoxide` | `cd` com frecência | ✅ Volta para `cd` |
+| `starship` | Prompt ultra-rápido | ✅ Volta para prompt git customizado |
+| `fzf` | Fuzzy-find para histórico/arquivos | ✅ Degradação graciosa |
+| `pipx` | Apps Python isolados (PEP 668) | ✅ Previne problemas com pip do sistema |
+
+**🎯 Detecção Inteligente**: Todas as ferramentas são auto-detectadas e voltam graciosamente para alternativas padrão.
+
+### 🔄 Exemplos da Função Update
 
 ```bash
-update --dry-run                  # preview
-update --security-only            # só patches críticos
-update --cleanup --kernels-keep 3 # limpa kernels antigos
-update --exclude snap             # tudo, menos snap
+# Preview seguro de todas as atualizações
+update --dry-run
+
+# Apenas patches de segurança
+update --security-only
+
+# Limpeza do sistema + gerenciamento de kernel
+update --cleanup --kernels-keep 3
+
+# Atualizar apenas gerenciadores específicos
+update --only apt,npm,cargo
+
+# Tudo exceto gerenciadores problemáticos
+update --exclude snap,flatpak
+
+# Modo largura de banda baixa
+update --low-data
+
+# Automação não-interativa
+update --yes --quiet
+
+# Atualização abrangente com limpeza
+update --all --cleanup --security-only
 ```
 
-Logs ficam em `~/.local/state/sysupdate/logs/` com rotação automática.
+**📊 Logging Automático**: Todas as operações logadas em `~/.local/state/sysupdate/logs/` com rotação (mantém últimos 10 por padrão).
 
-### 📁 Estrutura do repo
+### 📁 Estrutura do Repositório
 
 ```text
 .
-├── .zshrc              # Arquivo principal (único que você precisa)
-├── env.example         # Template de chaves/APIs
-├── LICENSE             # MIT
-└── README.md           # Este arquivo
+├── .zshrc              # Configuração principal (858 linhas, completa)
+├── env.example         # Template de ambiente privado (chaves API, etc.)
+├── README.md           # Esta documentação
+├── CONTRIBUTING.md     # Diretrizes de contribuição
+├── SECURITY.md         # Política de segurança
+├── LICENSE             # Licença MIT
+└── WARP.md            # Notas de integração com terminal Warp
 ```
+
+### 🏗️ Destaques da Arquitetura
+
+- **📁 Compatível com XDG Base Directory**: Todos os caches em `~/.cache/zsh/`, logs em `~/.local/state/`
+- **🔒 Segurança em primeiro lugar**: Chaves privadas em `~/.config/private/` (excluído do repo)
+- **⚡ Performance**: zcompile, carregamento lazy, cache inteligente
+- **🔄 Rotação Mensal do Histórico**: Formato `history-2025-09` previne inchaço
+- **🌍 Detecção de Plataforma**: Auto-adapta para Linux/WSL/MSYS2/Git-Bash
+- **🎨 Detecção True-color**: Apenas habilita recursos avançados quando suportado
 
 ### 🤝 Contribuindo
 
-Sugestões e PRs são bem-vindos! Teste no **Linux puro**, **WSL** e **Windows (Git-Bash/MSYS2)** antes de abrir PR.
+Contribuições são bem-vindas! Por favor:
+
+1. **Teste em múltiplas plataformas**: Linux, WSL, MSYS2, Git-Bash
+2. **Siga a arquitetura**: Compliance XDG, fallbacks graciosos, performance em primeiro lugar
+3. **Atualize documentação**: Mantenha README.md atual com os recursos
+4. **Pensamento em segurança**: Sem chaves API no repo, permissões adequadas
+
+Veja [CONTRIBUTING.md](CONTRIBUTING.md) para diretrizes detalhadas.
 
 ### 📄 Licença
 
