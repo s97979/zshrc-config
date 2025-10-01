@@ -1,15 +1,12 @@
 # 🚀 zshrc-config ⚡
 
-> 💡 A comprehensive, universal zsh configuration that works identically across Linux, WSL, MSYS2, Git-Bash, and Cygwin. Features a powerful `update()` function that manages 20+ package managers, smart aliases, modern tool integration, and optimized performance with compilation and caching.
+> 💡 A comprehensive, universal zsh configuration that works identically across Linux, WSL, MSYS2, Git-Bash, and Cygwin. Features a powerful `update()` function that manages 25+ package managers, smart aliases, modern tool integration, and optimized performance with compilation and caching.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Platform](https://img.shields.io/badge/platform-Linux%20%7C%20WSL%20%7C%20Windows%20%28MSYS2%20%7C%20Git--Bash%20%7C%20Cygwin%29-blue.svg)](https://github.com/bernardopg/zshrc-config)
 [![GitHub issues](https://img.shields.io/github/issues/bernardopg/zshrc-config.svg)](https://github.com/bernardopg/zshrc-config/issues)
-[![GitHub stars](https://img.shields.io/github/stars/bernardopg/zshrc-config.svg?style=social)](https://github.com/bernardopg/zshrc-config/stargazers)
-[![GitHub forks](https://img.shields.io/github/forks/bernardopg/zshrc-config.svg?style=social)](https://github.com/bernardopg/zshrc-config/network)
 [![GitHub last commit](https://img.shields.io/github/last-commit/bernardopg/zshrc-config.svg)](https://github.com/bernardopg/zshrc-config/commits)
 [![Repo size](https://img.shields.io/github/repo-size/bernardopg/zshrc-config.svg)](https://github.com/bernardopg/zshrc-config)
-[![GitHub all releases](https://img.shields.io/github/downloads/bernardopg/zshrc-config/total.svg)](https://github.com/bernardopg/zshrc-config/releases)
 
 ## 📋 Navigation / Navegação 🚀
 
@@ -40,7 +37,7 @@ This configuration is battle-tested and production-ready — use it as-is or cus
 ### ✨ Features
 
 - � **Universal compatibility**: Works on Linux, WSL, MSYS2, Git-Bash, Cygwin
-- 🔄 **Comprehensive update system**: Manages 20+ package managers (apt, npm, cargo, pipx, etc.)
+- 🔄 **Comprehensive update system**: Manages 25+ package managers (apt, npm, cargo, pipx, platformio, etc.)
 - 🚀 **Performance optimized**: zcompile, caching, lazy loading, XDG Base Directory compliance
 - 🔒 **Security-first**: Private API keys outside repo, proper permissions
 - 🎨 **Modern tool integration**: eza, bat, fzf, zoxide, starship auto-detection
@@ -99,7 +96,7 @@ This project is licensed under the MIT License — see `LICENSE` for details.
 | **Universal** | Identical on pure Linux, WSL, MSYS2, Cygwin, Git-Bash |
 | **Secure** | API keys stay in `~/.config/private/env.zsh` (outside repo, `chmod 600`) |
 | **Fast** | `zcompile`, lazy loading, `zsh-defer`, completion caching |
-| **Complete** | `update` manages 20+ package managers with retry, logs, dry-run, cleanup |
+| **Complete** | `update` manages 25+ package managers with retry, logs, dry-run, cleanup |
 | **Git-info** | Branch in prompt without slow plugins |
 | **Multi-terminal history** | No duplicates, real-time, 100k lines |
 | **True-color** | Activates only if terminal supports it |
@@ -159,7 +156,7 @@ Example available in `env.example`.
 
 ### 🔄 Update Function Features
 
-**Supported Package Managers (20+):**
+**Supported Package Managers (25+):**
 
 - **System**: apt, snap, flatpak, brew, nix, firmware (fwupdmgr)
 - **Languages**: pip, pipx, npm, yarn, pnpm, cargo, rust, gem, composer, go, flutter
@@ -226,13 +223,12 @@ update --all --cleanup --security-only
 
 ```text
 .
-├── .zshrc              # Main configuration (858 lines, feature-complete)
+├── .zshrc              # Main configuration (900+ lines, 26 sections)
 ├── env.example         # Private environment template (API keys, etc.)
 ├── README.md           # This documentation
 ├── CONTRIBUTING.md     # Contribution guidelines
 ├── SECURITY.md         # Security policy
-├── LICENSE             # MIT License
-└── WARP.md            # Warp terminal integration notes
+└── LICENSE             # MIT Licensenotes
 ```
 
 ### 🏗️ Architecture Highlights
@@ -243,6 +239,9 @@ update --all --cleanup --security-only
 - **🔄 Monthly History Rotation**: `history-2025-09` format prevents bloat
 - **🌍 Platform Detection**: Auto-adapts to Linux/WSL/MSYS2/Git-Bash
 - **🎨 True-color Detection**: Only enables advanced features when supported
+- **🧩 26 Organized Sections**: From profiling to system info, everything has its place
+- **⏱️ Smart Timeouts**: Prevents hanging on broken tools (yarn, gem)
+- **🚫 No System Pip**: PEP 668 compliant, uses pipx for Python apps
 
 ### 🤝 Contributing
 
@@ -271,7 +270,7 @@ Esta configuração é testada em produção — use como está ou customize con
 ### ✨ Funcionalidades
 
 - � **Compatibilidade universal**: Funciona no Linux, WSL, MSYS2, Git-Bash, Cygwin
-- 🔄 **Sistema de atualização abrangente**: Gerencia 20+ gerenciadores (apt, npm, cargo, pipx, etc.)
+- 🔄 **Sistema de atualização abrangente**: Gerencia 25+ gerenciadores (apt, npm, cargo, pipx, platformio, etc.)
 - 🚀 **Otimizado para performance**: zcompile, cache, carregamento lazy, compliance XDG
 - � **Segurança em primeiro lugar**: Chaves API privadas fora do repo, permissões adequadas
 - 🎨 **Integração com ferramentas modernas**: Auto-detecção de eza, bat, fzf, zoxide, starship
@@ -330,7 +329,7 @@ Este projeto está licenciado sob a Licença MIT — veja `LICENSE` para detalhe
 | **Universal** | Idêntico no Linux puro, WSL, MSYS2, Cygwin, Git-Bash |
 | **Seguro** | Chaves de API ficam em `~/.config/private/env.zsh` (fora do repo, `chmod 600`) |
 | **Rápido** | `zcompile`, carregamento lazy, `zsh-defer`, cache de completion |
-| **Completo** | `update` gerencia 20+ gerenciadores com retry, logs, dry-run, cleanup |
+| **Completo** | `update` gerencia 25+ gerenciadores com retry, logs, dry-run, cleanup |
 | **Git-info** | Branch no prompt sem plugins lentos |
 | **Histórico multi-terminal** | Sem duplicatas, tempo real, 100k linhas |
 | **True-color** | Ativa só se o terminal suportar |
@@ -390,7 +389,7 @@ Exemplo disponível em `env.example`.
 
 ### 🔄 Recursos da Função Update
 
-**Gerenciadores Suportados (20+):**
+**Gerenciadores Suportados (25+):**
 
 - **Sistema**: apt, snap, flatpak, brew, nix, firmware (fwupdmgr)
 - **Linguagens**: pip, pipx, npm, yarn, pnpm, cargo, rust, gem, composer, go, flutter
@@ -457,13 +456,12 @@ update --all --cleanup --security-only
 
 ```text
 .
-├── .zshrc              # Configuração principal (858 linhas, completa)
+├── .zshrc              # Configuração principal (900+ linhas, 26 seções)
 ├── env.example         # Template de ambiente privado (chaves API, etc.)
 ├── README.md           # Esta documentação
 ├── CONTRIBUTING.md     # Diretrizes de contribuição
 ├── SECURITY.md         # Política de segurança
-├── LICENSE             # Licença MIT
-└── WARP.md            # Notas de integração com terminal Warp
+└── LICENSE             # Licença MIT
 ```
 
 ### 🏗️ Destaques da Arquitetura
@@ -474,6 +472,9 @@ update --all --cleanup --security-only
 - **🔄 Rotação Mensal do Histórico**: Formato `history-2025-09` previne inchaço
 - **🌍 Detecção de Plataforma**: Auto-adapta para Linux/WSL/MSYS2/Git-Bash
 - **🎨 Detecção True-color**: Apenas habilita recursos avançados quando suportado
+- **🧩 26 Seções Organizadas**: De profiling a info do sistema, tudo tem seu lugar
+- **⏱️ Timeouts Inteligentes**: Previne travamentos em ferramentas quebradas (yarn, gem)
+- **🚫 Sem Pip do Sistema**: Compatível com PEP 668, usa pipx para apps Python
 
 ### 🤝 Contribuindo
 

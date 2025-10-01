@@ -1,6 +1,5 @@
 # -*- mode: zsh; sh-shell: zsh; -*-
 # ~/.zshrc – UNIVERSAL (Linux, WSL, MSYS2, Cygwin, Git-Bash)
-# All improvements baked-in – spinner fixed, low-data, exp-backoff, etc.
 
 # -----------------------------------------------------------
 # 0) Profiling (uncomment to debug load-time)
@@ -20,6 +19,9 @@
 : ${XDG_STATE_HOME:=$HOME/.local/state}
 mkdir -p "$XDG_CACHE_HOME/zsh" "$XDG_STATE_HOME/zsh" 2>/dev/null
 
+# Ruby gems config - disable documentation generation
+[[ ! -f ~/.gemrc ]] && echo "gem: --no-document" > ~/.gemrc
+
 # -----------------------------------------------------------
 # 3) History – multi-terminal, no dupes, monthly rotate
 # -----------------------------------------------------------
@@ -32,18 +34,27 @@ setopt INC_APPEND_HISTORY_TIME SHARE_HISTORY HIST_IGNORE_ALL_DUPS HIST_REDUCE_BL
 # 4) Shell behaviour
 # -----------------------------------------------------------
 setopt PROMPT_SUBST INTERACTIVE_COMMENTS AUTO_CD EXTENDED_GLOB NO_BEEP NOTIFY
-setopt CORRECT CORRECT_ALL
-bindkey -e
+# Only enable line-editor dependent options when a TTY is present
+if [[ -t 0 || -t 1 ]]; then
+  setopt CORRECT CORRECT_ALL
+  bindkey -e
+fi
 SPROMPT='zsh: %R → %r ? [Nyae] '
 
 # -----------------------------------------------------------
 # 5) PATH dedup + Windows (MSYS2 / Git-Bash) extras
 # -----------------------------------------------------------
 typeset -U path
+# PNPM
+export PNPM_HOME="$HOME/.local/share/pnpm"
+
 path=(
     $HOME/.local/bin
     $HOME/bin
+    $HOME/.cargo/bin
     $HOME/.npm-global/bin
+    $PNPM_HOME
+    $HOME/.local/share/gem/ruby/3.3.0/bin
     $HOME/Scripts
     $HOME/dev/tools/flutter/bin
     /usr/local/sbin /usr/sbin /sbin
@@ -71,8 +82,6 @@ export WSL
 [[ $COLORTERM = truecolor || $TERM = *256* ]] && {
     export TERM=xterm-256color
     export BAT_THEME=TwoDark
-    FZF_DEFAULT_OPTS+=" --color=16,bg+:238,preview-bg:235"
-    export FZF_DEFAULT_OPTS
 }
 
 # -----------------------------------------------------------
@@ -109,6 +118,10 @@ done
 # 11) FZF + FD
 # -----------------------------------------------------------
 export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
+# Add true-color settings if supported
+[[ $COLORTERM = truecolor || $TERM = *256* ]] && {
+    FZF_DEFAULT_OPTS+=" --color=16,bg+:238,preview-bg:235"
+}
 if command -v fd >/dev/null 2>&1; then
     export FZF_DEFAULT_COMMAND='fd --hidden --follow --exclude .git'
     export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
@@ -220,11 +233,13 @@ fi
 # -----------------------------------------------------------
 # 16) Keybindings
 # -----------------------------------------------------------
-if (( $+functions[history-substring-search-up] )); then
-    [[ -n ${terminfo[kcuu1]} ]] && bindkey "${terminfo[kcuu1]}" history-substring-search-up
-    [[ -n ${terminfo[kcud1]} ]] && bindkey "${terminfo[kcud1]}" history-substring-search-down
+if [[ -t 0 || -t 1 ]]; then
+  if (( $+functions[history-substring-search-up] )); then
+      [[ -n ${terminfo[kcuu1]} ]] && bindkey "${terminfo[kcuu1]}" history-substring-search-up
+      [[ -n ${terminfo[kcud1]} ]] && bindkey "${terminfo[kcud1]}" history-substring-search-down
+  fi
+  bindkey -M menuselect '^M' .accept-line
 fi
-bindkey -M menuselect '^M' .accept-line
 setopt NO_LIST_BEEP
 
 # -----------------------------------------------------------
@@ -256,8 +271,6 @@ export PODMAN_USERNS=keep-id
 # -----------------------------------------------------------
 # 21) UPDATE FUNCTION v2.1 + IMPROVEMENTS
 # -----------------------------------------------------------
-# Below is the **fixed and improved** update() v2.1 (spinner bug corrected,
-# exponential backoff, low-data flag, parallel APT, cargo-binstall, etc.)
 
 update() {
   emulate -L zsh -o nounset -o pipefail
@@ -333,6 +346,8 @@ update() {
         done
       done ) &
     spinner_pid=$!
+    # Ensure spinner doesn't print job control messages
+    disown $spinner_pid 2>/dev/null
   }
   spinner_stop() {
     if (( spinner_pid > 0 )); then
@@ -435,7 +450,10 @@ HELP
       if (( ! dryrun )); then
         msg "Requesting administrative privileges..."
         $sudo -v || { error "Failed to obtain sudo"; return 1; }
-        ( while true; do $sudo -v; sleep 50; done ) & local sudo_pid=$!
+        # Suppress job control messages
+        setopt LOCAL_OPTIONS NO_NOTIFY NO_MONITOR
+        ( while true; do $sudo -v; sleep 50; done ) &!
+        local sudo_pid=$!
       fi
     else
       error "Root privileges required. Install sudo or run as root."
@@ -463,7 +481,8 @@ HELP
     fi
     command -v pipx >/dev/null && available_managers[pipx]=1
     command -v npm >/dev/null && available_managers[npm]=1
-    command -v yarn >/dev/null && available_managers[yarn]=1
+    # Only enable yarn if it's actually functional (not broken Corepack)
+    command -v yarn >/dev/null && yarn --version &>/dev/null && available_managers[yarn]=1
     command -v pnpm >/dev/null && available_managers[pnpm]=1
     command -v cargo >/dev/null && available_managers[cargo]=1
     command -v rustup >/dev/null && available_managers[rust]=1
@@ -522,6 +541,11 @@ HELP
     section "APT Package Manager"
     [[ $low_data = 1 ]] && { info "Low-data mode: skipping APT"; return 0; }
 
+    # Validate apt-get is available
+    if ! command -v apt-get >/dev/null 2>&1; then
+      error "apt-get not found"; return 1
+    fi
+
     # locks
     local -a locks=(/var/lib/dpkg/lock-frontend /var/lib/dpkg/lock /var/lib/apt/lists/lock)
     local -i tries=30
@@ -540,8 +564,17 @@ HELP
       info "[DRY-RUN] apt-get update"; else
       local out=$($sudo env "${envv[@]}" apt-get update -o Acquire::Retries=3 2>&1)
       echo "$out" | grep -vE '^(Hit|Get|Fetched|Reading)'
-      echo "$out" | grep -q "is configured multiple times" && \
-        warn "Duplicate entries in /etc/apt/sources.list.d/"
+
+      # Check for duplicate sources
+      if echo "$out" | grep -q "is configured multiple times"; then
+        warn "Duplicate APT sources detected!"
+        local -a dupes=($(echo "$out" | grep "is configured multiple times" | grep -oP '/etc/apt/sources\.list\.d/[^ ]+' | sort -u))
+        if (( ${#dupes} )); then
+          warn "Files with duplicates: ${dupes[@]}"
+          warn "Fix: Check /etc/apt/sources.list.d/ for duplicate .list and .sources files"
+          warn "Example: sudo rm /etc/apt/sources.list.d/warpdotdev.list  # if warpdotdev.sources exists"
+        fi
+      fi
     fi
 
     # broken packages
@@ -603,7 +636,22 @@ HELP
       flatpak remote-ls --updates 2>/dev/null || info "No flatpak updates available"
     else
       msg "Updating flatpak packages..."
-      flatpak update -y --noninteractive
+      local out=$(flatpak update -y --noninteractive 2>&1)
+      echo "$out"
+
+      # Check for EOL runtimes
+      if echo "$out" | grep -qi "fim de vida\|end of life\|eol"; then
+        warn "End-of-life Flatpak runtimes detected!"
+        local -a eol_runtimes=($(echo "$out" | grep -i "fim de vida\|end of life" | grep -oP 'org\.[a-zA-Z0-9._-]+' | sort -u))
+        if (( ${#eol_runtimes} )); then
+          warn "EOL runtimes: ${eol_runtimes[@]}"
+          warn "These runtimes no longer receive security updates."
+          warn "Action needed: Update apps using these runtimes or remove them."
+          warn "List apps: flatpak list --app"
+          warn "Check runtime: flatpak info <app-id>"
+        fi
+      fi
+
       if (( cleanup )); then
         msg "Removing unused runtimes..."
         flatpak uninstall --unused -y --noninteractive
@@ -748,6 +796,316 @@ HELP
     success "Flutter updates completed"
   }
 
+  update_yarn() {
+    section "Yarn Package Manager"
+
+    # Check if yarn is functional
+    if ! command -v yarn >/dev/null 2>&1; then
+      warn "Yarn not found - skipping"
+      return 0
+    fi
+
+    if ! timeout 5 yarn --version &>/dev/null; then
+      warn "Yarn appears to be misconfigured or broken (Corepack issue?)"
+      info "Skipping yarn updates. To fix: npm install -g yarn or corepack enable"
+      return 0
+    fi
+
+    if (( ! dryrun )); then
+      msg "Updating yarn..."
+      # Use --non-interactive and timeout to prevent hanging
+      if timeout 120 yarn global upgrade --non-interactive 2>&1 | grep -v "warning"; then
+        success "Yarn updates completed"
+      else
+        local ret=$?
+        if (( ret == 124 )); then
+          warn "Yarn upgrade timed out - skipping"
+        else
+          warn "Yarn upgrade failed - skipping"
+        fi
+        return 0
+      fi
+    else
+      msg "Would update yarn packages"
+      success "Yarn updates completed"
+    fi
+  }
+
+  update_pnpm() {
+    section "PNPM Package Manager"
+    if (( ! dryrun )); then
+      msg "Updating pnpm..."
+      run_cmd "pnpm self-update"
+      msg "Updating global pnpm packages..."
+      run_cmd "pnpm update -g"
+    else
+      msg "Would update pnpm packages"
+    fi
+    success "PNPM updates completed"
+  }
+
+  update_cargo() {
+    section "Cargo Package Manager"
+    if command -v cargo-install-update >/dev/null 2>&1; then
+      if (( ! dryrun )); then
+        msg "Updating cargo packages..."
+        run_cmd "cargo install-update -a"
+      else
+        msg "Would update cargo packages"
+      fi
+    else
+      info "cargo-install-update not found"
+      if (( ! dryrun )); then
+        msg "Installing cargo-update..."
+        if run_cmd "cargo install cargo-update"; then
+          msg "Updating cargo packages..."
+          run_cmd "cargo install-update -a"
+        else
+          warn "Failed to install cargo-update"
+        fi
+      else
+        info "Install with: cargo install cargo-update"
+      fi
+    fi
+    success "Cargo updates completed"
+  }
+
+  update_gem() {
+    section "Ruby Gems"
+
+    if ! timeout 5 gem --version &>/dev/null 2>&1; then
+      warn "Ruby gem not found or unresponsive - skipping"
+      return 0
+    fi
+
+    if (( ! dryrun )); then
+      # Skip system update if RubyGems installed via APT
+      if dpkg -l rubygems ruby-rubygems 2>/dev/null | grep -q '^ii'; then
+        info "RubyGems installed via APT - skipping system update (use APT to upgrade)"
+      else
+        msg "Updating RubyGems system..."
+        timeout 120 gem update --system --no-document --quiet 2>&1 | \
+          grep -vE '(Parsing|Installing ri|Done|Successfully|Defaulting|WARNING|already initialized|previous definition)' | \
+          grep -v '^$' || true
+      fi
+
+      msg "Updating installed gems..."
+      local gems_output=$(timeout 300 gem update --no-document 2>&1 | \
+        grep -vE '(warning:|already initialized|previous definition|Parsing|Installing ri|Done|Defaulting)' | \
+        grep -E '^(Updating|Fetching|Building|Successfully installed)' | head -30)
+
+      if [[ -n "$gems_output" ]]; then
+        echo "$gems_output"
+        if (( cleanup )); then
+          msg "Cleaning old gem versions..."
+          local clean_cmd="gem cleanup --quiet 2>&1"
+          [[ -n "$sudo" ]] && clean_cmd="$sudo $clean_cmd"
+          timeout 60 eval "$clean_cmd" | grep -vE '(Cleaning|Clean up|warning|already initialized|Skipped|Unable to uninstall|FilePermissionError)' | head -10 || true
+        fi
+      else
+        info "All gems are up to date"
+      fi
+    else
+      msg "Would update Ruby gems"
+    fi
+    success "Gem updates completed"
+  }
+
+
+  update_composer() {
+    section "PHP Composer"
+    if (( ! dryrun )); then
+      msg "Updating composer..."
+      run_cmd "composer self-update"
+      msg "Updating global composer packages..."
+      run_cmd "composer global update"
+    else
+      msg "Would update composer packages"
+    fi
+    success "Composer updates completed"
+  }
+
+  update_go() {
+    section "Go Modules"
+    if (( ! dryrun )); then
+      msg "Updating Go tools..."
+      # Update go itself if installed via go
+      if command -v go >/dev/null && [[ -d $HOME/go/bin ]]; then
+        local -a gotools=($(go list -f '{{.Path}}' -m all 2>/dev/null | grep '^.*/.*/.*$'))
+        if (( ${#gotools} )); then
+          for tool in "${gotools[@]}"; do
+            run_cmd "go install ${tool}@latest"
+          done
+        fi
+      fi
+    else
+      msg "Would update Go tools"
+    fi
+    success "Go updates completed"
+  }
+
+  update_docker() {
+    section "Docker"
+    if (( ! dryrun )); then
+      msg "Pruning Docker system..."
+      if (( cleanup )); then
+        run_cmd "docker system prune -af --volumes"
+      else
+        run_cmd "docker system prune -f"
+      fi
+      msg "Pulling latest images for running containers..."
+      local -a images=($(docker ps --format '{{.Image}}' | sort -u))
+      for img in "${images[@]}"; do
+        [[ $img != *:* ]] && img="${img}:latest"
+        run_cmd "docker pull $img"
+      done
+    else
+      msg "Would prune Docker and update images"
+    fi
+    success "Docker updates completed"
+  }
+
+  update_podman() {
+    section "Podman"
+    if (( ! dryrun )); then
+      msg "Updating Podman images..."
+      run_cmd "podman auto-update"
+      if (( cleanup )); then
+        msg "Pruning Podman system..."
+        run_cmd "podman system prune -af --volumes"
+      fi
+    else
+      msg "Would update Podman images"
+    fi
+    success "Podman updates completed"
+  }
+
+  update_brew() {
+    section "Homebrew"
+    if (( ! dryrun )); then
+      msg "Updating Homebrew..."
+      run_cmd "brew update"
+      msg "Upgrading Homebrew packages..."
+      run_cmd "brew upgrade"
+      if (( cleanup )); then
+        msg "Cleaning Homebrew..."
+        run_cmd "brew cleanup"
+        run_cmd "brew autoremove"
+      fi
+    else
+      msg "Would update Homebrew packages"
+    fi
+    success "Homebrew updates completed"
+  }
+
+  update_nix() {
+    section "Nix Package Manager"
+    if (( ! dryrun )); then
+      msg "Updating Nix channels..."
+      run_cmd "nix-channel --update"
+      msg "Upgrading Nix packages..."
+      run_cmd "nix-env -u"
+      if (( cleanup )); then
+        msg "Collecting Nix garbage..."
+        run_cmd "nix-collect-garbage -d"
+      fi
+    else
+      msg "Would update Nix packages"
+    fi
+    success "Nix updates completed"
+  }
+
+  update_conda() {
+    section "Conda Package Manager"
+    if (( ! dryrun )); then
+      msg "Updating conda..."
+      run_cmd "conda update -n base -c defaults conda -y"
+      msg "Updating conda packages..."
+      run_cmd "conda update --all -y"
+      if (( cleanup )); then
+        msg "Cleaning conda..."
+        run_cmd "conda clean --all -y"
+      fi
+    else
+      msg "Would update conda packages"
+    fi
+    success "Conda updates completed"
+  }
+
+  update_mamba() {
+    section "Mamba Package Manager"
+    if (( ! dryrun )); then
+      msg "Updating mamba..."
+      run_cmd "mamba update -n base mamba -y"
+      msg "Updating mamba packages..."
+      run_cmd "mamba update --all -y"
+      if (( cleanup )); then
+        msg "Cleaning mamba..."
+        run_cmd "mamba clean --all -y"
+      fi
+    else
+      msg "Would update mamba packages"
+    fi
+    success "Mamba updates completed"
+  }
+
+  update_asdf() {
+    section "ASDF Version Manager"
+    if (( ! dryrun )); then
+      msg "Updating asdf..."
+      run_cmd "asdf update"
+      msg "Updating asdf plugins..."
+      run_cmd "asdf plugin update --all"
+    else
+      msg "Would update asdf and plugins"
+    fi
+    success "ASDF updates completed"
+  }
+
+  update_sdkman() {
+    section "SDKMAN!"
+    if (( ! dryrun )); then
+      msg "Updating SDKMAN!..."
+      source "$HOME/.sdkman/bin/sdkman-init.sh"
+      run_cmd "sdk selfupdate force"
+      msg "Updating SDK candidates..."
+      run_cmd "sdk update"
+      # Upgrade installed versions
+      local -a candidates=($(sdk list | grep -oP '(?<=\* )[a-z]+'))
+      for candidate in "${candidates[@]}"; do
+        run_cmd "sdk upgrade $candidate"
+      done
+    else
+      msg "Would update SDKMAN! and candidates"
+    fi
+    success "SDKMAN! updates completed"
+  }
+
+  update_antigen() {
+    section "Antigen Plugin Manager"
+    if (( ! dryrun )); then
+      msg "Updating Antigen..."
+      run_cmd "antigen update"
+      run_cmd "antigen selfupdate"
+    else
+      msg "Would update Antigen"
+    fi
+    success "Antigen updates completed"
+  }
+
+  update_zinit() {
+    section "Zinit Plugin Manager"
+    if (( ! dryrun )); then
+      msg "Updating Zinit..."
+      run_cmd "zinit self-update"
+      msg "Updating Zinit plugins..."
+      run_cmd "zinit update --all"
+    else
+      msg "Would update Zinit and plugins"
+    fi
+    success "Zinit updates completed"
+  }
+
   # ---------- EXECUTION ----------
   (( quiet )) || {
     echo "${colors[bold]}${colors[cyan]}╔════════════════════════════════════════════════════════════════╗${colors[reset]}"
@@ -766,11 +1124,27 @@ HELP
       pip) update_pip ;;
       pipx) update_pipx ;;
       npm) update_npm ;;
+      yarn) update_yarn ;;
+      pnpm) update_pnpm ;;
+      cargo) update_cargo ;;
       rust) update_rust ;;
+      gem) update_gem ;;
+      composer) update_composer ;;
+      go) update_go ;;
+      flutter) update_flutter ;;
+      docker) update_docker ;;
+      podman) update_podman ;;
+      brew) update_brew ;;
+      nix) update_nix ;;
+      conda) update_conda ;;
+      mamba) update_mamba ;;
+      asdf) update_asdf ;;
+      sdkman) update_sdkman ;;
       ohmyzsh) update_ohmyzsh ;;
+      antigen) update_antigen ;;
+      zinit) update_zinit ;;
       firmware) update_firmware ;;
       platformio) update_platformio ;;
-      flutter) update_flutter ;;
       *) (( VERBOSE )) && warn "Handler not implemented for: $manager" ;;
     esac
   done
@@ -856,3 +1230,11 @@ zsh-health() {
 if [[ ! -f ${ZDOTDIR:-$HOME}/.zshrc.zwc || ~/.zshrc -nt ${ZDOTDIR:-$HOME}/.zshrc.zwc ]]; then
     zcompile -R ${ZDOTDIR:-$HOME}/.zshrc.zwc ~/.zshrc 2>/dev/null
 fi
+
+# -----------------------------------------------------------
+# 26) System info on new shell (optional - can slow down)
+# -----------------------------------------------------------
+# Uncomment to run fastfetch on shell start
+# if [[ -o interactive ]] && command -v fastfetch >/dev/null 2>&1; then
+#     [[ ! "${ZSH_EVAL_CONTEXT:-}" =~ "file" ]] && fastfetch
+# fi
